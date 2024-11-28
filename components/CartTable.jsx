@@ -3,12 +3,25 @@ import CartItems from '@/components/CartItems';
 import { buttonVariants } from '@/components/ui/button';
 import { useAppSelector } from '@/lib/hooks';
 import Link from 'next/link';
+import { useState } from 'react';
+import Spinner from './loader/Spinner';
 
 const CartTable = () => {
     const { products } = useAppSelector((state) => state.cart);
 
+
     //Calculate the total price
     const totalPrice = products.reduce((prev, product) => prev + product.price * product.quantity, 0).toFixed(2);
+
+    const [loading, setLoading] = useState(true);
+
+    setTimeout(() => {
+        setLoading(false);
+    }, 10);
+
+    if (loading) {
+        return <Spinner />;
+    }
     return (
         <div>
             {
