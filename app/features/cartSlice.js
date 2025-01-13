@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    products: []
+    products: typeof window !== 'undefined' && localStorage.getItem('cart')
+        ? JSON.parse(localStorage.getItem('cart'))
+        : [],
+    isLoading: true
 };
 
 export const cartSlice = createSlice({
@@ -37,10 +40,13 @@ export const cartSlice = createSlice({
             if (productInCart?.quantity) {
                 productInCart.quantity = action.payload.quantity;
             }
+        },
+        setIsLoading: (state, action) => {
+            state.isLoading = action.payload;
         }
     }
 });
 
 export const cartReducer = cartSlice.reducer;
 
-export const { addToCart, incrementQuantity, decrementQuantity, removeFromCart, incrementQuantityByNumber } = cartSlice.actions;
+export const { addToCart, incrementQuantity, decrementQuantity, removeFromCart, incrementQuantityByNumber, setIsLoading } = cartSlice.actions;
